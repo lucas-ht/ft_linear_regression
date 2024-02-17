@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
 from typing import List
 from .car import Car
 
@@ -16,6 +17,10 @@ class render:
         plt.ylabel('Price')
         plt.title('ft_linear_regression')
 
+        formatter = FuncFormatter(lambda x, _: '{:,.0f}'.format(x))
+        plt.gca().xaxis.set_major_formatter(formatter)
+        plt.gca().yaxis.set_major_formatter(formatter)
+
         plt.show()
 
     def _render_cars(self):
@@ -25,7 +30,8 @@ class render:
         plt.scatter(x, y, color='blue')
 
     def _render_prediction(self):
-        x_min, x_max = 0, max([car.mileage for car in self.cars])
+        x_min = min([car.mileage for car in self.cars])
+        x_max = max([car.mileage for car in self.cars])
 
         y_min = self.m * x_min + self.c
         y_max = self.m * x_max + self.c
