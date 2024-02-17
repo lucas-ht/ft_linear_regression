@@ -1,6 +1,6 @@
 import csv
 from typing import List
-from car import Car
+from .car import Car
 
 class parser:
     def __init__(self, file: str) -> None:
