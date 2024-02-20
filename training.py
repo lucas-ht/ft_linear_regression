@@ -6,15 +6,14 @@ from linear_regression.model import Model
 from linear_regression.render import Render
 
 def get_cars() -> List[Car] | None:
-    try:
-        cars = Parser(DATA_FILE).parse_cars()
-        return cars
-
-    except Exception:
-        return None
+    cars = Parser(DATA_FILE).parse_cars()
+    return cars
 
 def main() -> None:
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='\033[1m%(levelname)-8s\033[0m %(message)s'
+    )
 
     cars = get_cars()
     if cars is None:

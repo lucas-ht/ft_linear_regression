@@ -8,6 +8,9 @@ LEARNING_RATE:    float        = 0.01
 EPOCHS:           int          = 20000
 
 class Model:
+    """
+    A linear regression model to estimate the price of a car given its mileage.
+    """
     intercept:    float        = 0.00
     slope:        float        = 0.00
 
@@ -20,7 +23,7 @@ class Model:
         """
         Initialize the model with the given cars and parameters.
         """
-        if cars is not None and cars:
+        if cars is not None:
             self.cars = cars
 
         if intercept is not None:

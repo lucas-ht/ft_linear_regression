@@ -7,6 +7,9 @@ from .car import Car
 logging.getLogger('matplotlib').setLevel(logging.WARNING)
 
 class Render:
+    """
+    A renderer to visualize the cars and the linear regression prediction.
+    """
     CAR_COLOR        = 'blue'
     PREDICTION_COLOR = 'red'
 
@@ -14,9 +17,6 @@ class Render:
         """
         Initialize the renderer with the given cars and parameters.
         """
-        if not cars:
-            raise ValueError("List of cars cannot be empty.")
-
         self.cars      = cars
         self.intercept = intercept
         self.slope     = slope
@@ -41,8 +41,8 @@ class Render:
             plt.show()
         except KeyboardInterrupt:
             pass
-        except Exception:
-            logging.error('Could not render the plot.', exc_info=True)
+        except Exception as e:
+            logging.error(f'Could not render the plot: {e}', exc_info=False)
 
     def _render_cars(self) -> None:
         x = [car.mileage for car in self.cars]

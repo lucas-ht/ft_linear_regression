@@ -7,6 +7,9 @@ MODEL_FILE:       str          = 'model.csv'
 DATA_FILE:        str          = 'data.csv'
 
 class Parser:
+    """
+    A parser to read and write cars and models to and from files.
+    """
     def __init__(self, file: str) -> None:
         self._file = file
 
@@ -22,10 +25,10 @@ class Parser:
                 writer.writerow([intercept, slope])
 
                 logging.info(f'Saved model with intercept: {intercept}, slope: {slope} to `{self._file}`.')
-        except (FileNotFoundError, IndexError, ValueError):
-            logging.error('Could not save model.', exc_info=True)
+        except (FileNotFoundError, IndexError, ValueError) as e:
+            logging.error(f'Could not save model: {e}', exc_info=False)
 
-    def parse_model(self) -> Tuple[float | None, float | None] | None:
+    def parse_model(self) -> Tuple[float | None, float | None]:
         """
         Parse the model from the file.
         """
@@ -42,9 +45,9 @@ class Parser:
                 logging.info(f'Parsed model with intercept: {intercept}, slope: {slope}')
                 return intercept, slope
 
-        except (FileNotFoundError, IndexError, ValueError) as e:
-            logging.error(f'Could not parse model from file: `{self._file}`.', exc_info=True)
-            raise e
+        except Exception as e:
+            logging.error(f'Could not parse model from file: `{self._file}`: {e}', exc_info=False)
+            return None, None
 
     def parse_cars(self) -> List[Car] | None:
         """
@@ -64,12 +67,15 @@ class Parser:
                     if car is not None:
                         cars.append(car)
 
+                if not cars:
+                    raise ValueError('no valid cars')
+
                 logging.info(f'Parsed {len(cars)} cars.')
                 return cars
 
-        except (FileNotFoundError, ValueError, csv.Error) as e:
-            logging.error(f'Could not parse cars from file: `{self._file}`.', exc_info=True)
-            raise e
+        except Exception as e:
+            logging.error(f'Could not parse cars from file: `{self._file}`: {e}', exc_info=False)
+            return None
 
     @staticmethod
     def _parse_car(row: List[str]) -> Car | None:
@@ -83,5 +89,5 @@ class Parser:
 
             return Car(mileage, price)
 
-        except (IndexError, ValueError):
-            logging.error(f"Invalid row: `{' '.join(row)}`.", exc_info=True)
+        except (IndexError, ValueError) as e:
+            logging.error(f"Invalid row: `{' '.join(row)}`: {e}", exc_info=False)
