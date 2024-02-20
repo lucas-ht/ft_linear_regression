@@ -12,7 +12,7 @@ def main() -> None:
     model = Model(cars=cars)
     model.train()
 
-    Render(cars, model.m, model.c)()
+    Render(cars, model.intercept, model.slope)()
 
 if __name__ == '__main__':
     main()
