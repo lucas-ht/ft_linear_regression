@@ -36,6 +36,7 @@ class Render:
         self._render_cars()
         self._render_prediction()
 
+        logging.info('Rendering the plot.')
         try:
             plt.show()
         except KeyboardInterrupt:

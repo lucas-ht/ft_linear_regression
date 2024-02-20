@@ -3,7 +3,8 @@ import logging
 from typing import List, Tuple
 from .car import Car
 
-MODEL_FILE      = 'model.csv'
+MODEL_FILE:       str          = 'model.csv'
+DATA_FILE:        str          = 'data.csv'
 
 class Parser:
     def __init__(self, file: str) -> None:

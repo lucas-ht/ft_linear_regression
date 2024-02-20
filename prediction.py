@@ -39,7 +39,7 @@ def main() -> None:
     if price < 0:
         price = 0
 
-    print(f'Estimated price: {price}')
+    print(f'Estimated price: {price:.2f}')
 
 if __name__ == '__main__':
     main()

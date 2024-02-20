@@ -1,14 +1,15 @@
 import logging
+from math import sqrt
 from typing import List
 from .parser import Parser, MODEL_FILE
 from .car import Car
 
-LEARNING_RATE   = 0.02
-EPOCHS          = 50000
+LEARNING_RATE:    float        = 0.01
+EPOCHS:           int          = 20000
 
 class Model:
-    intercept:    float = 0.00
-    slope:        float = 0.00
+    intercept:    float        = 0.00
+    slope:        float        = 0.00
 
     _min_mileage: float | None = None
     _max_mileage: float | None = None
@@ -19,8 +20,8 @@ class Model:
         """
         Initialize the model with the given cars and parameters.
         """
-        if cars is not None:
-            self._initialize_cars(cars)
+        if cars is not None and cars:
+            self.cars = cars
 
         if intercept is not None:
             self.intercept = intercept
@@ -38,6 +39,9 @@ class Model:
         """
         Train the model using gradient descent.
         """
+        self._standardize()
+        logging.info(f'Training Model with learning_rate: {learning_rate}, epochs: {epochs}')
+
         for epoch in range(epochs):
             total_loss      = 0
             total_gradient  = 0
@@ -54,14 +58,26 @@ class Model:
 
         logging.info(f'Finished Training after {EPOCHS} epochs with intercept: {self.intercept}, slope: {self.slope}')
         self._destandardize()
+
         Parser(MODEL_FILE).save_model(intercept=self.intercept, slope=self.slope)
 
-    def _initialize_cars(self, cars: List[Car]) -> None:
-        if not cars:
-            raise ValueError("List of cars cannot be empty.")
+    def calculate_rmse(self) -> float:
+        """
+        Calculate the Root Mean Squared Error (RMSE) of the model.
+        """
+        total_squared_error = 0
 
-        self.cars = cars
+        for car in self.cars:
+            estimated_price = self.estimate_price(car.mileage)
+            error = estimated_price - car.price
+            total_squared_error += error ** 2
 
+        mean_squared_error = total_squared_error / len(self.cars)
+        root_mean_squared_error = sqrt(mean_squared_error)
+
+        return root_mean_squared_error
+
+    def _standardize(self) -> None:
         mileages = [car.mileage for car in self.cars]
         self._min_mileage = min(mileages)
         self._max_mileage = max(mileages)
@@ -70,9 +86,6 @@ class Model:
         self._min_price = min(prices)
         self._max_price = max(prices)
 
-        self._standardize()
-
-    def _standardize(self) -> None:
         for car in self.cars:
             car.standardize(self._min_mileage, self._max_mileage, self._min_price, self._max_price)
 
