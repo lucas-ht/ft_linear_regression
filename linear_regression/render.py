@@ -1,9 +1,12 @@
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
+import logging
 from typing import List
 from .car import Car
 
-class render:
+logging.getLogger('matplotlib').setLevel(logging.WARNING)
+
+class Render:
     def __init__(self, cars: List[Car], m: int, c: int) -> None:
         self.cars = cars
         self.m    = m

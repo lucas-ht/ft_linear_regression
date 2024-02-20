@@ -1,10 +1,18 @@
-from linear_regression.parser import parser
-from linear_regression.render import render
+import logging
+from linear_regression.parser import Parser
+from linear_regression.model import Model
+from linear_regression.render import Render
 
 
 def main() -> None:
-    cars = parser('data.csv').parse()
-    render(cars, 0, 0)()
+    logging.basicConfig(level=logging.DEBUG)
+
+    cars = Parser('data.csv').parse_cars()
+
+    model = Model(cars=cars)
+    model.train()
+
+    Render(cars, model.m, model.c)()
 
 if __name__ == '__main__':
     main()
