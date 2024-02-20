@@ -7,13 +7,13 @@ LEARNING_RATE   = 0.02
 EPOCHS          = 50000
 
 class Model:
-    intercept:   float = 0.00
-    slope:       float = 0.00
+    intercept:    float = 0.00
+    slope:        float = 0.00
 
-    min_mileage: float | None = None
-    max_mileage: float | None = None
-    min_price:   float | None = None
-    max_price:   float | None = None
+    _min_mileage: float | None = None
+    _max_mileage: float | None = None
+    _min_price:   float | None = None
+    _max_price:   float | None = None
 
     def __init__(self, cars: List[Car] | None = None, intercept: float | None = None, slope: float | None = None) -> None:
         """
@@ -63,26 +63,26 @@ class Model:
         self.cars = cars
 
         mileages = [car.mileage for car in self.cars]
-        self.min_mileage = min(mileages)
-        self.max_mileage = max(mileages)
+        self._min_mileage = min(mileages)
+        self._max_mileage = max(mileages)
 
         prices = [car.price for car in self.cars]
-        self.min_price = min(prices)
-        self.max_price = max(prices)
+        self._min_price = min(prices)
+        self._max_price = max(prices)
 
         self._standardize()
 
     def _standardize(self) -> None:
         for car in self.cars:
-            car.standardize(self.min_mileage, self.max_mileage, self.min_price, self.max_price)
+            car.standardize(self._min_mileage, self._max_mileage, self._min_price, self._max_price)
 
-        logging.debug(f'Standardized Data: min_mileage: {self.min_mileage}, max_mileage: {self.max_mileage}, min_price: {self.min_price}, max_price: {self.max_price}')
+        logging.debug(f'Standardized Data: min_mileage: {self._min_mileage}, max_mileage: {self._max_mileage}, min_price: {self._min_price}, max_price: {self._max_price}')
 
     def _destandardize(self) -> None:
-        self.slope = self.slope * (self.max_price - self.min_price) / (self.max_mileage - self.min_mileage)
-        self.intercept = self.intercept * (self.max_price - self.min_price) + self.min_price - self.slope * self.min_mileage
+        self.slope = self.slope * (self._max_price - self._min_price) / (self._max_mileage - self._min_mileage)
+        self.intercept = self.intercept * (self._max_price - self._min_price) + self._min_price - self.slope * self._min_mileage
 
         for car in self.cars:
-            car.destandardize(self.min_mileage, self.max_mileage, self.min_price, self.max_price)
+            car.destandardize(self._min_mileage, self._max_mileage, self._min_price, self._max_price)
 
         logging.debug(f'De-standardized Data: intercept: {self.intercept}, slope: {self.slope}')

@@ -5,14 +5,14 @@ from .car import Car
 
 class Parser:
     def __init__(self, file: str) -> None:
-        self.file = file
+        self._file = file
 
     def save_model(self, intercept: float, slope: float) -> None:
         """
         Save the model to the file.
         """
         try:
-            with open(self.file, 'w') as file:
+            with open(self._file, 'w') as file:
                 writer = csv.writer(file)
 
                 writer.writerow(['intercept', 'slope'])
@@ -27,7 +27,7 @@ class Parser:
         Parse the model from the file.
         """
         try:
-            with open(self.file, 'r') as file:
+            with open(self._file, 'r') as file:
                 reader = csv.reader(file)
 
                 # Skip the header
@@ -50,7 +50,7 @@ class Parser:
         cars = []
 
         try:
-            with open(self.file, 'r') as file:
+            with open(self._file, 'r') as file:
                 reader = csv.reader(file)
 
                 # Skip the header
