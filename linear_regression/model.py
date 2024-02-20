@@ -1,13 +1,14 @@
 import logging
 from typing import List
+from .parser import Parser
 from .car import Car
 
-LEARNING_RATE   = 0.01
+LEARNING_RATE   = 0.02
 EPOCHS          = 50000
 
 class Model:
-    intercept:   float = +1.00
-    slope:       float = -1.00
+    intercept:   float = 0.00
+    slope:       float = 0.00
 
     min_mileage: float | None = None
     max_mileage: float | None = None
@@ -53,6 +54,7 @@ class Model:
 
         logging.info(f'Finished Training after {EPOCHS} epochs with intercept: {self.intercept}, slope: {self.slope}')
         self._destandardize()
+        Parser('model.csv').save_model(intercept=self.intercept, slope=self.slope)
 
     def _initialize_cars(self, cars: List[Car]) -> None:
         if not cars:
