@@ -9,7 +9,7 @@ def main() -> None:
 
     cars = Parser('data.csv').parse_cars()
 
-    intercept, slope = Parser('model.csv').parse_model()
+    # intercept, slope = Parser('model.csv').parse_model()
 
     # model = Model(intercept=intercept, slope=slope)
     # price = model.estimate_price(cars[0])

@@ -1,6 +1,6 @@
 import logging
 from typing import List
-from .parser import Parser
+from .parser import Parser, MODEL_FILE
 from .car import Car
 
 LEARNING_RATE   = 0.02
@@ -28,11 +28,11 @@ class Model:
         if slope is not None:
             self.slope = slope
 
-    def estimate_price(self, car: Car) -> float:
+    def estimate_price(self, mileage: float) -> float:
         """
         Estimate the price of a car given its mileage.
         """
-        return self.intercept + self.slope * car.mileage
+        return self.intercept + self.slope * mileage
 
     def train(self, learning_rate: float = LEARNING_RATE, epochs: float = EPOCHS) -> None:
         """
@@ -43,7 +43,7 @@ class Model:
             total_gradient  = 0
 
             for car in self.cars:
-                estimated_price = self.estimate_price(car)
+                estimated_price = self.estimate_price(car.mileage)
                 total_loss      += estimated_price - car.price
                 total_gradient  += (estimated_price - car.price) * car.mileage
 
@@ -54,7 +54,7 @@ class Model:
 
         logging.info(f'Finished Training after {EPOCHS} epochs with intercept: {self.intercept}, slope: {self.slope}')
         self._destandardize()
-        Parser('model.csv').save_model(intercept=self.intercept, slope=self.slope)
+        Parser(MODEL_FILE).save_model(intercept=self.intercept, slope=self.slope)
 
     def _initialize_cars(self, cars: List[Car]) -> None:
         if not cars:

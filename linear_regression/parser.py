@@ -3,6 +3,8 @@ import logging
 from typing import List, Tuple
 from .car import Car
 
+MODEL_FILE      = 'model.csv'
+
 class Parser:
     def __init__(self, file: str) -> None:
         self._file = file
@@ -18,7 +20,7 @@ class Parser:
                 writer.writerow(['intercept', 'slope'])
                 writer.writerow([intercept, slope])
 
-                logging.info(f'Saved model with intercept: {intercept}, slope: {slope} to `{self.file}`.')
+                logging.info(f'Saved model with intercept: {intercept}, slope: {slope} to `{self._file}`.')
         except (FileNotFoundError, IndexError, ValueError):
             logging.error('Could not save model.', exc_info=True)
 
@@ -39,9 +41,9 @@ class Parser:
                 logging.info(f'Parsed model with intercept: {intercept}, slope: {slope}')
                 return intercept, slope
 
-        except (FileNotFoundError, IndexError, ValueError):
-            logging.error('Could not parse model.', exc_info=True)
-            return None
+        except (FileNotFoundError, IndexError, ValueError) as e:
+            logging.error(f'Could not parse model from file: `{self._file}`.', exc_info=True)
+            raise e
 
     def parse_cars(self) -> List[Car] | None:
         """
@@ -64,9 +66,9 @@ class Parser:
                 logging.info(f'Parsed {len(cars)} cars.')
                 return cars
 
-        except (FileNotFoundError, ValueError, csv.Error):
-            logging.error(f'Could not parse cars from file: `{self.file}`.', exc_info=True)
-            return None
+        except (FileNotFoundError, ValueError, csv.Error) as e:
+            logging.error(f'Could not parse cars from file: `{self._file}`.', exc_info=True)
+            raise e
 
     @staticmethod
     def _parse_car(row: List[str]) -> Car | None:

@@ -36,7 +36,12 @@ class Render:
         self._render_cars()
         self._render_prediction()
 
-        plt.show()
+        try:
+            plt.show()
+        except KeyboardInterrupt:
+            pass
+        except Exception:
+            logging.error('Could not render the plot.', exc_info=True)
 
     def _render_cars(self) -> None:
         x = [car.mileage for car in self.cars]
