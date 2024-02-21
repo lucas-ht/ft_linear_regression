@@ -1,6 +1,17 @@
 name: Test
 
-on: [push, pull_request]
+on:
+  push:
+    paths-ignore:
+      - 'assets/**'
+      - '.editorconfig'
+      - 'README.md'
+
+  pull_request:
+    paths-ignore:
+      - 'assets/**'
+      - '.editorconfig'
+      - 'README.md'
 
 permissions:
   contents: read
