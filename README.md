@@ -13,6 +13,10 @@ To achieve this goal, I have employed the widely used linear regression techniqu
 
 The model has been trained using a gradient descent algorithm, a popular optimization technique used in machine learning.
 
+![ft_linear_regression preview](/assets/ft_linear_regression.png)
+
+## Subject
+[The subject can be found here.](/assets/subject.pdf)
 
 ## Usage
 

@@ -25,7 +25,8 @@ class Render:
         """
         Render the cars and the linear regression prediction.
         """
-        plt.figure("ft_linear_regression")
+        plt.figure('ft_linear_regression')
+        plt.title('ft_linear_regression')
         plt.xlabel('Mileage')
         plt.ylabel('Price')
 
