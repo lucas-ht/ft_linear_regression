@@ -1,6 +1,14 @@
+import logging
 import unittest
 from linear_regression.model import Model
 from linear_regression.car import Car
+
+def setUpModule():
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='\n\033[1m%(levelname)-8s\033[0m %(message)s'
+    )
+
 
 class TestModel(unittest.TestCase):
     def setUp(self):
@@ -20,15 +28,15 @@ class TestModel(unittest.TestCase):
         self.assertEqual(estimated_price, 15000)
 
     def test_train(self):
-        self.model.train()
+        self.model.train(learning_rate=0.5, epochs=200, should_save_model=False)
 
         # Check that the model parameters have been updated
         self.assertNotEqual(self.model.intercept, 0)
         self.assertNotEqual(self.model.slope, 0)
 
-        # Check that the model can estimate prices
         for car in self.cars:
             estimated_price = self.model.estimate_price(car.mileage)
+            logging.debug(f'Estimated price: {estimated_price}, actual price: {car.price}')
             self.assertAlmostEqual(estimated_price, car.price, delta=100)
 
     def test_calculate_rmse(self):
@@ -38,4 +46,4 @@ class TestModel(unittest.TestCase):
         self.assertGreater(rmse, 0)
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(verbosity=2)
