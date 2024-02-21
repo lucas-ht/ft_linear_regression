@@ -21,6 +21,7 @@ def main() -> None:
         level=logging.DEBUG,
         format='\033[1m%(levelname)-8s\033[0m %(message)s'
     )
+
     cars = get_cars()
     if cars is None:
         return

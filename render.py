@@ -3,14 +3,19 @@ from typing import List
 from linear_regression.car import Car
 from linear_regression.parser import Parser, DATA_FILE, MODEL_FILE
 from linear_regression.model import Model
+from linear_regression.render import Render
 
 def get_cars() -> List[Car] | None:
     cars = Parser(DATA_FILE).parse_cars()
     return cars
 
-def save_model(intercept: float, slope: float) -> None:
-    Parser(MODEL_FILE).save_model(intercept, slope)
+def get_model() -> Model | None:
+    intercept, slope = Parser(MODEL_FILE).parse_model()
+    if intercept is None or slope is None:
+        return None
 
+    model = Model(intercept=intercept, slope=slope)
+    return model
 
 def main() -> None:
     logging.basicConfig(
@@ -22,12 +27,12 @@ def main() -> None:
     if cars is None:
         return
 
-    model = Model(cars=cars)
-    model.train()
+    model = get_model()
+    if model is None:
+        return
 
-    save_model(model.intercept, model.slope)
-
-    print('The model has been trained successfully.')
+    render = Render(cars, model.intercept, model.slope)
+    render()
 
 if __name__ == '__main__':
     main()

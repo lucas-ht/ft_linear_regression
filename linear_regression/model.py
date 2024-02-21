@@ -38,7 +38,7 @@ class Model:
         """
         return self.intercept + self.slope * mileage
 
-    def train(self, learning_rate: float = LEARNING_RATE, epochs: float = EPOCHS, should_save_model: bool = True) -> None:
+    def train(self, learning_rate: float = LEARNING_RATE, epochs: float = EPOCHS) -> None:
         """
         Train the model using gradient descent.
         """
@@ -61,9 +61,6 @@ class Model:
 
         logging.info(f'Finished Training after {EPOCHS} epochs with intercept: {self.intercept}, slope: {self.slope}')
         self._destandardize()
-
-        if should_save_model:
-            Parser(MODEL_FILE).save_model(intercept=self.intercept, slope=self.slope)
 
     def calculate_rmse(self) -> float:
         """

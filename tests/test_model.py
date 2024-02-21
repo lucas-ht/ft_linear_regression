@@ -28,7 +28,7 @@ class TestModel(unittest.TestCase):
         self.assertEqual(estimated_price, 15000)
 
     def test_train(self):
-        self.model.train(learning_rate=0.5, epochs=200, should_save_model=False)
+        self.model.train(learning_rate=0.5, epochs=200)
 
         # Check that the model parameters have been updated
         self.assertNotEqual(self.model.intercept, 0)
