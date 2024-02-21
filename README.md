@@ -15,8 +15,14 @@ The model has been trained using a gradient descent algorithm, a popular optimiz
 
 ![ft_linear_regression preview](/assets/ft_linear_regression.png)
 
+
+---
+
+
 ## Subject
+
 [The subject can be found here.](/assets/subject.pdf)
+
 
 ## Usage
 
