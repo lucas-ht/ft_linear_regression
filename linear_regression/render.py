@@ -10,8 +10,8 @@ class Render:
     """
     A renderer to visualize the cars and the linear regression prediction.
     """
-    CAR_COLOR        = 'blue'
-    PREDICTION_COLOR = 'red'
+    CAR_COLOR               = '#B6CEFFFF'
+    LINEAR_REGRESSION_COLOR = '#FFADADFF'
 
     def __init__(self, cars: List[Car], intercept: float, slope: float) -> None:
         """
@@ -26,16 +26,20 @@ class Render:
         Render the cars and the linear regression prediction.
         """
         plt.figure('ft_linear_regression')
-        plt.title('ft_linear_regression')
-        plt.xlabel('Mileage')
-        plt.ylabel('Price')
+        plt.title('ft_linear_regression', fontsize=12, pad=12)
+        plt.xlabel('Mileage', labelpad=12, fontsize=10)
+        plt.ylabel('Price', labelpad=12, fontsize=10)
+        plt.tick_params(labelsize=6)
 
         formatter = FuncFormatter(lambda x, _: '{:,.0f}'.format(x))
         plt.gca().xaxis.set_major_formatter(formatter)
         plt.gca().yaxis.set_major_formatter(formatter)
 
         self._render_cars()
-        self._render_prediction()
+        self._render_linear_regression()
+
+        plt.legend()
+        plt.tight_layout()
 
         logging.info('Rendering the plot.')
         try:
@@ -49,13 +53,16 @@ class Render:
         x = [car.mileage for car in self.cars]
         y = [car.price for car in self.cars]
 
-        plt.scatter(x, y, color=self.CAR_COLOR)
+        plt.scatter(x, y, label="Car", color=self.CAR_COLOR, s=50)
 
-    def _render_prediction(self) -> None:
+    def _render_linear_regression(self) -> None:
         x_min = min([car.mileage for car in self.cars])
         x_max = max([car.mileage for car in self.cars])
 
         y_min = self.intercept + self.slope * x_min
         y_max = self.intercept + self.slope * x_max
 
-        plt.plot([x_min, x_max], [y_min, y_max], color=self.PREDICTION_COLOR)
+        plt.plot(
+            [x_min, x_max], [y_min, y_max],
+            label='Linear regression', color=self.LINEAR_REGRESSION_COLOR, linewidth=2
+        )
