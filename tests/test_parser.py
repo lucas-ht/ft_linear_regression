@@ -27,11 +27,11 @@ class TestParser(unittest.TestCase):
 
     @patch('builtins.open', side_effect=FileNotFoundError)
     def test_parse_model_not_found(self, mock_file):
-        self.assertEqual(self.parser.parse_model(), (None, None))
+        self.assertEqual(self.parser.parse_model(), (0, 0))
 
     @patch('builtins.open', side_effect=PermissionError)
     def test_parse_model_permission_error(self, mock_file):
-        self.assertEqual(self.parser.parse_model(), (None, None))
+        self.assertEqual(self.parser.parse_model(), (0, 0))
 
     @patch('builtins.open', new_callable=mock_open, read_data='mileage,price\n10000,20000\n20000,18000\n-1,1000\n,\n')
     def test_parse_cars(self, mock_file):
