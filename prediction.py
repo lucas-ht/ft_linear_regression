@@ -20,8 +20,6 @@ def get_mileage() -> float | None:
 
 def get_model() -> Model | None:
     intercept, slope = Parser(MODEL_FILE).parse_model()
-    if intercept is None or slope is None:
-        return None
 
     model = Model(intercept=intercept, slope=slope)
     return model

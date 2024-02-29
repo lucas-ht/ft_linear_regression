@@ -47,7 +47,7 @@ class Parser:
 
         except Exception as e:
             logging.error(f'Could not parse model from file: `{self._file}`: {e}', exc_info=False)
-            return None, None
+            return 0, 0
 
     def parse_cars(self) -> List[Car] | None:
         """
